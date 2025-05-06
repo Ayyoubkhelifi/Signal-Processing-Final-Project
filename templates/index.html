@@ -3,577 +3,383 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Neural Network Training Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <title>WiFi CSI Analysis for Human Activity Recognition</title>
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
-    <style>
-      .gradient-bg {
-        background: linear-gradient(135deg, #6366f1, #a855f7);
-      }
-      .glass-card {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
-      .parameter-card {
-        transition: all 0.3s ease;
-      }
-      .parameter-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-          0 10px 10px -5px rgba(0, 0, 0, 0.04);
-      }
-      .progress-ring {
-        transition: stroke-dashoffset 0.35s;
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-      }
-      @keyframes pulse {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      .loading-pulse {
-        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      }
-      .loading-spin {
-        animation: spin 1s linear infinite;
-      }
-      .progress-steps {
-        counter-reset: step;
-      }
-      .progress-step::before {
-        counter-increment: step;
-        content: counter(step);
-      }
-    </style>
   </head>
-  <body class="bg-gray-100 min-h-screen">
-    <!-- Navigation -->
-    <nav class="gradient-bg text-white shadow-lg">
-      <div class="container mx-auto px-6 py-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <i class="fas fa-brain text-2xl"></i>
-            <span class="text-xl font-bold">
-              Neural Network Training Dashboard
-            </span>
-          </div>
-        </div>
-      </div>
-    </nav>
+  <body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold text-center mb-8">
+        WiFi CSI Analysis for Human Activity Recognition
+      </h1>
 
-    <!-- Main Content -->
-    <div class="container mx-auto px-6 py-8">
-      <!-- Training Form Section -->
-      <div class="mb-12">
-        <div class="bg-white rounded-lg shadow-lg p-6">
-          <h2 class="text-2xl font-semibold mb-6">
-            Model Training Configuration
-          </h2>
-          <form id="trainForm" action="/train" method="POST" class="space-y-6">
-            <div class="grid md:grid-cols-2 gap-6">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2"
-                  >Select Room</label
+      <!-- Configuration Form -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4">Model Configuration</h2>
+        <form action="/train" method="post" id="trainForm">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Data Selection -->
+            <div>
+              <label class="block text-gray-700 mb-2">Select Room Data:</label>
+              <select
+                name="room"
+                class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="room_1">Room 1</option>
+                <option value="room_2">Room 2</option>
+                <option value="room_3">Room 3</option>
+              </select>
+            </div>
+
+            <!-- Model Type -->
+            <div>
+              <label class="block text-gray-700 mb-2"
+                >Model Architecture:</label
+              >
+              <select
+                name="model_type"
+                class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="cnn">CNN</option>
+                <option value="lstm">LSTM</option>
+              </select>
+            </div>
+
+            <!-- Optimization Settings -->
+            <div>
+              <label class="block text-gray-700 mb-2"
+                >Optimization Algorithm:</label
+              >
+              <div class="flex items-center">
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded"
+                  >Whale Optimization Algorithm (WOA)</span
                 >
-                <select
-                  name="room"
-                  class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                <span class="ml-2 text-sm text-gray-500"
+                  >For hyperparameter tuning</span
                 >
-                  <option value="room_1">Room 1</option>
-                  <option value="room_2">Room 2</option>
-                  <option value="room_3">Room 3</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2"
-                  >Model Type</label
-                >
-                <select
-                  name="model_type"
-                  class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
-                >
-                  <option value="cnn">CNN</option>
-                  <option value="lstm">LSTM</option>
-                </select>
               </div>
             </div>
+
+            <!-- Training Parameters -->
+            <div>
+              <label class="block text-gray-700 mb-2"
+                >Training Iterations:</label
+              >
+              <input
+                type="number"
+                name="iterations"
+                value="5"
+                min="1"
+                max="20"
+                class="w-full px-4 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+              />
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="mt-6">
             <button
               type="submit"
-              id="submitBtn"
-              class="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-300 flex items-center justify-center space-x-2"
+              class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg"
             >
-              <span>Start Training</span>
-              <i class="fas fa-arrow-right"></i>
+              Train Model
             </button>
-          </form>
+          </div>
+        </form>
+      </div>
+
+      <!-- Data Preview Section -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4">CSI Data Preview</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white">
+            <thead>
+              <tr>
+                <th
+                  class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Room
+                </th>
+                <th
+                  class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Activities
+                </th>
+                <th
+                  class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Samples
+                </th>
+                <th
+                  class="py-2 px-4 border-b border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                >
+                  Features
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="py-2 px-4 border-b border-gray-200">Room 1</td>
+                <td class="py-2 px-4 border-b border-gray-200">
+                  Walking, Standing, Sitting
+                </td>
+                <td class="py-2 px-4 border-b border-gray-200">1,200</td>
+                <td class="py-2 px-4 border-b border-gray-200">
+                  100 (after PCA)
+                </td>
+              </tr>
+              <tr>
+                <td class="py-2 px-4 border-b border-gray-200">Room 2</td>
+                <td class="py-2 px-4 border-b border-gray-200">
+                  Walking, Running, Sitting
+                </td>
+                <td class="py-2 px-4 border-b border-gray-200">1,500</td>
+                <td class="py-2 px-4 border-b border-gray-200">
+                  100 (after PCA)
+                </td>
+              </tr>
+              <tr>
+                <td class="py-2 px-4 border-b border-gray-200">Room 3</td>
+                <td class="py-2 px-4 border-b border-gray-200">
+                  Walking, Standing, Lying
+                </td>
+                <td class="py-2 px-4 border-b border-gray-200">1,800</td>
+                <td class="py-2 px-4 border-b border-gray-200">
+                  100 (after PCA)
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <!-- Loading Indicator (Initially Hidden) -->
-      <div id="loadingSection" class="hidden">
-        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <div class="flex flex-col items-center">
-            <div class="relative">
-              <svg
-                class="loading-spin w-16 h-16 text-indigo-600"
-                viewBox="0 0 24 24"
-                fill="none"
+      <!-- Model Architecture Visualization -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4">Model Architecture</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-lg font-medium mb-2">CNN Model</h3>
+            <div class="bg-gray-100 p-4 rounded-lg">
+              <pre class="text-sm">
+Input Layer (CSI data)
+    ↓
+Conv1D (32 filters, kernel=3)
+    ↓
+MaxPooling1D (pool_size=2)
+    ↓
+Conv1D (64 filters, kernel=3)
+    ↓
+MaxPooling1D (pool_size=2)
+    ↓
+Flatten
+    ↓
+Dense (128 neurons, ReLU)
+    ↓
+Dropout (0.5)
+    ↓
+Dense (n_classes, Softmax)
+                        </pre
               >
-                <circle
-                  class="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="4"
-                ></circle>
-                <path
-                  class="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
             </div>
-            <h3
-              class="mt-4 text-lg font-semibold text-gray-900"
-              id="loadingStatus"
-            >
-              Initializing Training...
+          </div>
+          <div>
+            <h3 class="text-lg font-medium mb-2">LSTM Model</h3>
+            <div class="bg-gray-100 p-4 rounded-lg">
+              <pre class="text-sm">
+Input Layer (CSI data)
+    ↓
+LSTM (64 units, return_sequences=True)
+    ↓
+LSTM (32 units)
+    ↓
+Dense (64 neurons, ReLU)
+    ↓
+Dropout (0.5)
+    ↓
+Dense (n_classes, Softmax)
+                        </pre
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Optimization Algorithm -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4">
+          Whale Optimization Algorithm (WOA)
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-lg font-medium mb-2">Algorithm Description</h3>
+            <p class="text-gray-700">
+              The Whale Optimization Algorithm (WOA) is a nature-inspired
+              metaheuristic that mimics the hunting behavior of humpback whales.
+              It's used to find optimal hyperparameters for the neural network
+              model.
+            </p>
+            <ul class="list-disc pl-5 mt-2 text-gray-700">
+              <li>Optimizes learning rate, batch size, and neuron count</li>
+              <li>Balances exploration and exploitation phases</li>
+              <li>
+                Converges to global optimum through bubble-net hunting strategy
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-medium mb-2">
+              Hyperparameters Search Space
             </h3>
-
-            <!-- Progress Steps -->
-            <div class="w-full max-w-3xl mt-8">
-              <div class="progress-steps relative">
-                <div class="flex justify-between mb-2">
-                  <div class="w-1/4">
-                    <div
-                      class="relative w-10 h-10 mx-auto bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold progress-step"
-                      id="step1"
-                    >
-                      <span class="relative z-10">1</span>
-                    </div>
-                    <div class="text-xs text-center mt-2 text-gray-600">
-                      Data Loading
-                    </div>
-                  </div>
-                  <div class="w-1/4">
-                    <div
-                      class="relative w-10 h-10 mx-auto bg-gray-300 rounded-full flex items-center justify-center text-white font-bold progress-step"
-                      id="step2"
-                    >
-                      <span class="relative z-10">2</span>
-                    </div>
-                    <div class="text-xs text-center mt-2 text-gray-600">
-                      Preprocessing
-                    </div>
-                  </div>
-                  <div class="w-1/4">
-                    <div
-                      class="relative w-10 h-10 mx-auto bg-gray-300 rounded-full flex items-center justify-center text-white font-bold progress-step"
-                      id="step3"
-                    >
-                      <span class="relative z-10">3</span>
-                    </div>
-                    <div class="text-xs text-center mt-2 text-gray-600">
-                      Model Training
-                    </div>
-                  </div>
-                  <div class="w-1/4">
-                    <div
-                      class="relative w-10 h-10 mx-auto bg-gray-300 rounded-full flex items-center justify-center text-white font-bold progress-step"
-                      id="step4"
-                    >
-                      <span class="relative z-10">4</span>
-                    </div>
-                    <div class="text-xs text-center mt-2 text-gray-600">
-                      Optimization
-                    </div>
-                  </div>
-                  <div
-                    class="absolute left-0 top-5 w-full h-1 bg-gray-200 -z-1"
-                  >
-                    <div
-                      class="absolute left-0 top-0 h-full bg-indigo-600 transition-all duration-500"
-                      id="progressBar"
-                      style="width: 0%"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <table class="min-w-full bg-white border">
+              <thead>
+                <tr>
+                  <th class="py-2 px-4 border-b">Parameter</th>
+                  <th class="py-2 px-4 border-b">Min Value</th>
+                  <th class="py-2 px-4 border-b">Max Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="py-2 px-4 border-b">Learning Rate</td>
+                  <td class="py-2 px-4 border-b">0.001</td>
+                  <td class="py-2 px-4 border-b">0.01</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-4 border-b">Batch Size</td>
+                  <td class="py-2 px-4 border-b">32</td>
+                  <td class="py-2 px-4 border-b">128</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-4 border-b">Neurons</td>
+                  <td class="py-2 px-4 border-b">16</td>
+                  <td class="py-2 px-4 border-b">64</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
 
-      <!-- Results Section (Initially Hidden) -->
-      <div id="resultsSection" class="hidden">
-        <div class="grid md:grid-cols-2 gap-8 mb-8">
-          <!-- Training Progress -->
-          <div class="bg-white rounded-lg shadow-lg p-6">
-            <h3 class="text-xl font-semibold mb-4">Training Progress</h3>
-            <div class="relative pt-1">
-              <div class="flex mb-2 items-center justify-between">
-                <div>
-                  <span
-                    class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-indigo-600 bg-indigo-200"
-                  >
-                    Progress
-                  </span>
-                </div>
-                <div class="text-right">
-                  <span
-                    id="progressPercentage"
-                    class="text-xs font-semibold inline-block text-indigo-600"
-                  >
-                    100%
-                  </span>
-                </div>
-              </div>
-              <div
-                class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-indigo-200"
-              >
-                <div
-                  id="progressBar"
-                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-500 w-full"
-                ></div>
-              </div>
-            </div>
-            <div id="trainingChart" class="mt-4 h-64"></div>
-          </div>
+      <!-- Results Button -->
+      <div class="mt-8 text-center">
+        <a
+          href="/results"
+          class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg"
+        >
+          View Activity Recognition Results
+        </a>
+      </div>
+    </div>
 
-          <!-- Model Performance -->
-          <div class="bg-white rounded-lg shadow-lg p-6">
-            <h3 class="text-xl font-semibold mb-4">Model Performance</h3>
-            <div class="grid grid-cols-2 gap-4">
-              <div class="text-center">
-                <div class="relative inline-block">
-                  <svg class="w-32 h-32">
-                    <circle
-                      class="text-gray-200"
-                      stroke-width="10"
-                      stroke="currentColor"
-                      fill="transparent"
-                      r="56"
-                      cx="64"
-                      cy="64"
-                    />
-                    <circle
-                      id="accuracyRing"
-                      class="progress-ring text-indigo-600"
-                      stroke-width="10"
-                      stroke="currentColor"
-                      fill="transparent"
-                      r="56"
-                      cx="64"
-                      cy="64"
-                    />
-                  </svg>
-                  <div
-                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                  >
-                    <span id="accuracyValue" class="text-2xl font-bold"
-                      >99%</span
-                    >
-                  </div>
-                </div>
-                <p class="mt-2 text-sm font-medium text-gray-600">
-                  Explained Variance
-                </p>
-              </div>
-              <div id="lossChart" class="h-32"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Best Parameters -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <h3 class="text-xl font-semibold mb-6">Best Model Parameters</h3>
-          <div class="grid md:grid-cols-3 gap-6">
+    <!-- Progress Modal (Hidden by default) -->
+    <div
+      id="progressModal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center"
+    >
+      <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+        <h2 class="text-xl font-semibold mb-4">Training in Progress</h2>
+        <div class="mb-4">
+          <div class="w-full bg-gray-200 rounded-full h-4">
             <div
-              class="parameter-card bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 rounded-lg"
-            >
-              <div class="flex items-center justify-between mb-4">
-                <h4 class="text-lg font-medium text-indigo-700">
-                  Learning Rate
-                </h4>
-                <i class="fas fa-chart-line text-indigo-500"></i>
-              </div>
-              <p id="learningRate" class="text-3xl font-bold text-indigo-800">
-                0.0052
-              </p>
-            </div>
-            <div
-              class="parameter-card bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg"
-            >
-              <div class="flex items-center justify-between mb-4">
-                <h4 class="text-lg font-medium text-purple-700">Batch Size</h4>
-                <i class="fas fa-layer-group text-purple-500"></i>
-              </div>
-              <p id="batchSize" class="text-3xl font-bold text-purple-800">
-                92
-              </p>
-            </div>
-            <div
-              class="parameter-card bg-gradient-to-br from-pink-50 to-pink-100 p-6 rounded-lg"
-            >
-              <div class="flex items-center justify-between mb-4">
-                <h4 class="text-lg font-medium text-pink-700">Neurons</h4>
-                <i class="fas fa-brain text-pink-500"></i>
-              </div>
-              <p id="neurons" class="text-3xl font-bold text-pink-800">28</p>
-            </div>
+              id="progressBar"
+              class="bg-indigo-600 h-4 rounded-full"
+              style="width: 0%"
+            ></div>
           </div>
-        </div>
-
-        <!-- Data Overview -->
-        <div class="bg-white rounded-lg shadow-lg p-6">
-          <h3 class="text-xl font-semibold mb-6">Data Overview</h3>
-          <div class="grid md:grid-cols-2 gap-8">
-            <div>
-              <div id="dataShapeChart" class="h-64"></div>
-            </div>
-            <div class="space-y-4">
-              <div class="p-4 bg-gray-50 rounded-lg">
-                <h4 class="text-lg font-medium text-gray-700 mb-2">
-                  Dataset Statistics
-                </h4>
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <p class="text-sm text-gray-600">Total Samples</p>
-                    <p
-                      id="totalSamples"
-                      class="text-xl font-bold text-gray-800"
-                    >
-                      21,805
-                    </p>
-                  </div>
-                  <div>
-                    <p class="text-sm text-gray-600">Features</p>
-                    <p
-                      id="totalFeatures"
-                      class="text-xl font-bold text-gray-800"
-                    >
-                      100
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <p id="progressStatus" class="mt-2 text-center">Initializing...</p>
         </div>
       </div>
     </div>
 
     <script>
-      let currentStep = 1;
-      const totalSteps = 4;
-
-      function updateProgress(step, status, progress) {
-        currentStep = step;
-
-        // Update progress bar
-        document.getElementById("progressBar").style.width = `${progress}%`;
-
-        // Update status text
-        document.getElementById("loadingStatus").textContent = status;
-
-        // Update step indicators
-        for (let i = 1; i <= totalSteps; i++) {
-          const stepElement = document.getElementById(`step${i}`);
-          if (i < step) {
-            stepElement.classList.remove("bg-gray-300");
-            stepElement.classList.add("bg-indigo-600");
-            stepElement.classList.remove("loading-pulse");
-          } else if (i === step) {
-            stepElement.classList.remove("bg-gray-300");
-            stepElement.classList.add("bg-indigo-600", "loading-pulse");
-          } else {
-            stepElement.classList.remove("bg-indigo-600", "loading-pulse");
-            stepElement.classList.add("bg-gray-300");
-          }
-        }
-      }
-
       document
         .getElementById("trainForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const form = e.target;
-          const loadingSection = document.getElementById("loadingSection");
-          const resultSection = document.getElementById("resultsSection");
-          const submitBtn = document.getElementById("submitBtn");
-
-          // Show loading section and hide results
-          loadingSection.classList.remove("hidden");
-          resultSection.classList.add("hidden");
-          submitBtn.disabled = true;
-
-          try {
-            const response = await fetch(form.action, {
-              method: "POST",
-              body: new FormData(form),
-            });
-
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-
-            while (true) {
-              const { value, done } = await reader.read();
-              if (done) break;
-
-              const lines = decoder.decode(value).split("\n");
-              for (const line of lines) {
-                if (!line) continue;
-
-                const data = JSON.parse(line);
-                if (data.step && data.status) {
-                  updateProgress(data.step, data.status, data.progress);
-
-                  // If final step with results
-                  if (data.result) {
-                    // Hide loading and show results
-                    loadingSection.classList.add("hidden");
-                    resultSection.classList.remove("hidden");
-
-                    const result = data.result;
-                    if (result.status === "success") {
-                      // Update results display
-                      document.getElementById("learningRate").textContent =
-                        result.details.best_params.learning_rate.toFixed(6);
-                      document.getElementById("batchSize").textContent =
-                        result.details.best_params.batch_size;
-                      document.getElementById("neurons").textContent =
-                        result.details.best_params.neurons;
-
-                      // Update other displays
-                      document.getElementById("totalSamples").textContent =
-                        result.details.data_shape[0].toLocaleString();
-                      document.getElementById("totalFeatures").textContent =
-                        result.details.data_shape[1].toLocaleString();
-
-                      // Initialize charts
-                      initializeCharts(result.details);
-                    }
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent the default form submission
+          document.getElementById("progressModal").classList.remove("hidden");
+          
+          // Get form data
+          const formData = new FormData(this);
+          
+          // Create progress bar elements
+          const progressBar = document.getElementById("progressBar");
+          const progressStatus = document.getElementById("progressStatus");
+          
+          // Send AJAX request
+          fetch('/train', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => {
+            // Check if we got a stream response
+            if (response.headers.get('content-type').includes('text/event-stream')) {
+              // Set up a reader for the stream
+              const reader = response.body.getReader();
+              const decoder = new TextDecoder();
+              
+              function processStream() {
+                return reader.read().then(({ done, value }) => {
+                  if (done) {
+                    console.log('Stream complete');
+                    return;
                   }
-                }
+                  
+                  // Decode the chunk and split by newlines
+                  const chunk = decoder.decode(value, { stream: true });
+                  const lines = chunk.split('\n').filter(line => line.trim() !== '');
+                  
+                  // Process each line as a JSON event
+                  lines.forEach(line => {
+                    try {
+                      const data = JSON.parse(line);
+                      console.log('Progress update:', data);
+                      
+                      // Update the progress bar
+                      if (data.progress) {
+                        progressBar.style.width = data.progress + '%';
+                      }
+                      
+                      // Update the status text
+                      if (data.status) {
+                        progressStatus.textContent = data.status;
+                      }
+                      
+                      // If we're done, redirect to results
+                      if (data.progress === 100 && data.result && data.result.status === 'success') {
+                        setTimeout(() => {
+                          window.location.href = '/results';
+                        }, 1000);
+                      }
+                    } catch (e) {
+                      console.error('Error parsing JSON:', e, line);
+                    }
+                  });
+                  
+                  // Continue reading
+                  return processStream();
+                });
               }
+              
+              // Start processing the stream
+              return processStream();
+            } else {
+              // Handle non-stream response
+              return response.json().then(data => {
+                if (data.status === 'error') {
+                  progressStatus.textContent = 'Error: ' + data.message;
+                  progressBar.style.backgroundColor = '#f56565';
+                }
+              });
             }
-          } catch (error) {
-            console.error("Error:", error);
-            document.getElementById("loadingStatus").textContent =
-              "Error occurred during training";
-          } finally {
-            submitBtn.disabled = false;
-          }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            progressStatus.textContent = 'Error: ' + error.message;
+            progressBar.style.backgroundColor = '#f56565';
+          });
         });
-
-      function initializeCharts(data) {
-        // Training Progress Chart
-        new ApexCharts(document.querySelector("#trainingChart"), {
-          series: [
-            {
-              name: "Loss",
-              data: [data.best_score],
-            },
-          ],
-          chart: {
-            type: "line",
-            height: 250,
-            toolbar: {
-              show: false,
-            },
-          },
-          stroke: {
-            curve: "smooth",
-          },
-          xaxis: {
-            categories: ["Iteration 1"],
-          },
-          theme: {
-            mode: "light",
-            palette: "palette1",
-          },
-        }).render();
-
-        // Data Shape Distribution
-        new ApexCharts(document.querySelector("#dataShapeChart"), {
-          series: [
-            {
-              name: "Samples",
-              data: [data.data_shape[0]],
-            },
-          ],
-          chart: {
-            type: "bar",
-            height: 250,
-          },
-          plotOptions: {
-            bar: {
-              borderRadius: 4,
-              horizontal: true,
-            },
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          xaxis: {
-            categories: ["Training Set"],
-          },
-        }).render();
-
-        // Loss Chart
-        new ApexCharts(document.querySelector("#lossChart"), {
-          series: [
-            {
-              name: "Loss",
-              data: [100, 80, 60, 40, 20],
-            },
-          ],
-          chart: {
-            type: "area",
-            height: 130,
-            sparkline: {
-              enabled: true,
-            },
-          },
-          stroke: {
-            curve: "smooth",
-          },
-          fill: {
-            opacity: 0.3,
-          },
-        }).render();
-      }
-
-      // Initialize charts with dummy data on page load
-      document.addEventListener("DOMContentLoaded", () => {
-        const dummyData = {
-          best_score: 0,
-          data_shape: [0, 0],
-          best_params: {
-            learning_rate: 0,
-            batch_size: 0,
-            neurons: 0,
-          },
-        };
-        initializeCharts(dummyData);
-      });
     </script>
   </body>
 </html>

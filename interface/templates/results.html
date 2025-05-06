@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Activity Recognition Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Human Activity Recognition Results</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Confusion Matrix -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Confusion Matrix</h2>
+                <div class="flex justify-center">
+                    {{ confusion_matrix|safe }}
+                </div>
+                <p class="mt-4 text-gray-600">
+                    The confusion matrix shows how well the model distinguishes between different activities.
+                    Each row represents the true activity, while columns show predicted activities.
+                </p>
+            </div>
+            
+            <!-- Performance Metrics -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-4">Performance Metrics</h2>
+                <div class="flex justify-center">
+                    {{ metrics|safe }}
+                </div>
+                <p class="mt-4 text-gray-600">
+                    This chart shows precision, recall, and F1-score for each activity class,
+                    along with the overall accuracy of the model.
+                </p>
+            </div>
+            
+            <!-- Activity Timeline -->
+            <div class="bg-white p-6 rounded-lg shadow-md col-span-1 md:col-span-2">
+                <h2 class="text-xl font-semibold mb-4">Activity Recognition Timeline</h2>
+                <div class="flex justify-center">
+                    {{ timeline|safe }}
+                </div>
+                <p class="mt-4 text-gray-600">
+                    This timeline compares the true activities (top) with the activities predicted by the model (bottom).
+                    It shows how accurately the model tracks activity changes over time.
+                </p>
+            </div>
+            
+            <!-- CSI Visualization -->
+            <div class="bg-white p-6 rounded-lg shadow-md col-span-1 md:col-span-2">
+                <h2 class="text-xl font-semibold mb-4">CSI Signal with Activity Labels</h2>
+                <div class="flex justify-center">
+                    {{ csi_plot|safe }}
+                </div>
+                <p class="mt-4 text-gray-600">
+                    This visualization shows the CSI signal components with activity labels overlaid.
+                    It helps understand how different activities affect the WiFi signal patterns.
+                </p>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <a href="/" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Back to Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Activity Recognition Results</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold text-center mb-8">
+        Human Activity Recognition Results
+      </h1>
+
+      <!-- Model Performance Summary -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4">Model Performance</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="bg-blue-50 p-4 rounded-lg text-center">
+            <p class="text-sm text-gray-600">Accuracy</p>
+            <p class="text-2xl font-bold text-blue-600">
+              {{ "%.1f"|format(accuracy) }}%
+            </p>
+          </div>
+          <div class="bg-green-50 p-4 rounded-lg text-center">
+            <p class="text-sm text-gray-600">Precision</p>
+            <p class="text-2xl font-bold text-green-600">
+              {{ "%.1f"|format(precision) }}%
+            </p>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-lg text-center">
+            <p class="text-sm text-gray-600">Recall</p>
+            <p class="text-2xl font-bold text-yellow-600">
+              {{ "%.1f"|format(recall) }}%
+            </p>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-lg text-center">
+            <p class="text-sm text-gray-600">F1 Score</p>
+            <p class="text-2xl font-bold text-purple-600">
+              {{ "%.1f"|format(f1_score) }}%
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Optimized Parameters -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4">
+          Optimized Hyperparameters (WOA)
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="border p-4 rounded-lg">
+            <p class="text-sm text-gray-600">Learning Rate</p>
+            <p class="text-xl font-semibold">
+              {{ optimized_params.learning_rate }}
+            </p>
+          </div>
+          <div class="border p-4 rounded-lg">
+            <p class="text-sm text-gray-600">Batch Size</p>
+            <p class="text-xl font-semibold">
+              {{ optimized_params.batch_size }}
+            </p>
+          </div>
+          <div class="border p-4 rounded-lg">
+            <p class="text-sm text-gray-600">Neurons</p>
+            <p class="text-xl font-semibold">{{ optimized_params.neurons }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confusion Matrix -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4">Confusion Matrix</h2>
+        <div class="flex justify-center">
+          <img
+            src="data:image/png;base64,{{ confusion_matrix_img }}"
+            alt="Confusion Matrix"
+            class="max-w-full h-auto"
+          />
+        </div>
+        <p class="mt-4 text-gray-600 text-center">
+          The confusion matrix shows how well the model distinguishes between
+          different activities.
+        </p>
+      </div>
+
+      <!-- Activity Timeline -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4">
+          Activity Recognition Timeline
+        </h2>
+        <div class="flex justify-center">
+          <img
+            src="data:image/png;base64,{{ activity_timeline_img }}"
+            alt="Activity Timeline"
+            class="max-w-full h-auto"
+          />
+        </div>
+        <p class="mt-4 text-gray-600 text-center">
+          This timeline shows how the model tracks activity changes over time.
+        </p>
+      </div>
+
+      <!-- CSI Signal Visualization -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 class="text-xl font-semibold mb-4">
+          CSI Signal with Activity Labels
+        </h2>
+        <div class="flex justify-center">
+          <img
+            src="data:image/png;base64,{{ csi_visualization_img }}"
+            alt="CSI Visualization"
+            class="max-w-full h-auto"
+          />
+        </div>
+        <p class="mt-4 text-gray-600 text-center">
+          This visualization shows how different activities affect the WiFi
+          signal patterns.
+        </p>
+      </div>
+
+      <!-- Back Button -->
+      <div class="mt-8 text-center">
+        <a
+          href="/"
+          class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Back to Dashboard
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
