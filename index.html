@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi CSI Human Activity Recognition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .tab-active {
+            border-bottom: 3px solid #4f46e5;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-wifi text-2xl"></i>
+                    <span class="text-xl font-bold">CSI Activity Recognition</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#overview" class="hover:text-indigo-200">Overview</a>
+                    <a href="#methodology" class="hover:text-indigo-200">Methodology</a>
+                    <a href="#implementation" class="hover:text-indigo-200">Implementation</a>
+                    <a href="#results" class="hover:text-indigo-200">Results</a>
+                    <a href="#team" class="hover:text-indigo-200">Team</a>
+                </div>
+                <button class="md:hidden focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">WiFi CSI Human Activity Recognition</h1>
+            <p class="text-xl md:text-2xl mb-8">Using Deep Learning and Metaheuristic Optimization for Smart Environment Monitoring</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#implementation" class="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-indigo-100 transition duration-300">View Project</a>
+                <a href="https://github.com/ludlows/CSI-Activity-Recognition" target="_blank" class="bg-indigo-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300">
+                    <i class="fab fa-github mr-2"></i>GitHub Code
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overview Section -->
+    <section id="overview" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Project Overview</h2>
+            
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-600">What is CSI?</h3>
+                    <p class="text-gray-700 mb-6">
+                        Channel State Information (CSI) describes how wireless signals propagate from transmitter to receiver. 
+                        Human movements alter these signal patterns, allowing us to detect activities without cameras or wearables.
+                    </p>
+                    
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-600">Why This Project?</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                        <li>Contactless activity monitoring for smart homes/healthcare</li>
+                        <li>Better privacy than camera-based systems</li>
+                        <li>Low-cost compared to radar/UWB solutions</li>
+                        <li>Works with existing WiFi infrastructure</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-100 p-6 rounded-xl">
+                    <img src="https://www.researchgate.net/publication/334576405/figure/fig1/AS:783460536770560@1563992633280/CSI-amplitude-of-30-subcarriers-for-different-activities.png" 
+                         alt="CSI Activities" class="rounded-lg shadow-md w-full">
+                    <p class="text-center text-sm text-gray-600 mt-2">CSI patterns for different human activities</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section id="methodology" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Methodology</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Data Collection Card -->
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover transition duration-300">
+                    <div class="text-indigo-600 mb-4">
+                        <i class="fas fa-database text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">1. CSI Data Collection</h3>
+                    <p class="text-gray-700">
+                        Collected from Intel 5300 WiFi cards with 30 subcarriers. Dataset includes 6 activities: walking, running, sitting, standing, falling, and no activity.
+                    </p>
+                </div>
+                
+                <!-- Preprocessing Card -->
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover transition duration-300">
+                    <div class="text-indigo-600 mb-4">
+                        <i class="fas fa-filter text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">2. Data Preprocessing</h3>
+                    <p class="text-gray-700">
+                        Noise removal with Butterworth filter, PCA for dimensionality reduction, and sequence segmentation into 5-second windows.
+                    </p>
+                </div>
+                
+                <!-- Modeling Card -->
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover transition duration-300">
+                    <div class="text-indigo-600 mb-4">
+                        <i class="fas fa-brain text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">3. Hybrid CNN-LSTM Model</h3>
+                    <p class="text-gray-700">
+                        Combines CNN for spatial feature extraction and LSTM for temporal pattern recognition in CSI sequences.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Optimization Approaches -->
+            <div class="mt-16">
+                <h3 class="text-2xl font-semibold mb-6 text-center text-indigo-600">Optimization Algorithms</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                        <thead class="bg-indigo-600 text-white">
+                            <tr>
+                                <th class="py-3 px-4 text-left">Algorithm</th>
+                                <th class="py-3 px-4 text-left">Type</th>
+                                <th class="py-3 px-4 text-left">Key Parameters</th>
+                                <th class="py-3 px-4 text-left">Advantages</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="py-3 px-4">SCA (Sine Cosine)</td>
+                                <td class="py-3 px-4">Math-based</td>
+                                <td class="py-3 px-4">r1, r2, r3, r4</td>
+                                <td class="py-3 px-4">Simple, fast convergence</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="py-3 px-4">GWO (Grey Wolf)</td>
+                                <td class="py-3 px-4">Swarm-based</td>
+                                <td class="py-3 px-4">Alpha, Beta, Delta</td>
+                                <td class="py-3 px-4">Balanced exploration/exploitation</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4">HHO (Harris Hawk)</td>
+                                <td class="py-3 px-4">Nature-inspired</td>
+                                <td class="py-3 px-4">Escape energy, Jump strength</td>
+                                <td class="py-3 px-4">Adaptive search strategy</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Implementation Section -->
+    <section id="implementation" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Implementation</h2>
+            
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-200 mb-8">
+                <button class="tab-active py-2 px-4 mr-2 focus:outline-none">Data Pipeline</button>
+                <button class="py-2 px-4 mr-2 text-gray-600 hover:text-indigo-600">Model Architecture</button>
+                <button class="py-2 px-4 mr-2 text-gray-600 hover:text-indigo-600">Optimization</button>
+                <button class="py-2 px-4 text-gray-600 hover:text-indigo-600">Interface</button>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-600">Data Processing Pipeline</h3>
+                    <ol class="list-decimal pl-5 space-y-3 text-gray-700">
+                        <li>Raw CSI data collection from WiFi NIC</li>
+                        <li>Noise reduction with 5Hz low-pass filter</li>
+                        <li>Amplitude/phase extraction from subcarriers</li>
+                        <li>Normalization (Min-Max scaling)</li>
+                        <li>Sequence segmentation (100 samples/window)</li>
+                        <li>Train-test split (80-20 ratio)</li>
+                    </ol>
+                    
+                    <div class="mt-6 bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h4 class="font-semibold text-blue-800 mb-2">Key Python Libraries:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">NumPy</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">TensorFlow</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Scikit-learn</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Mealpy</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Streamlit</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-100 p-6 rounded-xl">
+                    <pre class="bg-gray-800 text-green-400 p-4 rounded-lg overflow-x-auto text-sm">
+                        <code>
+# Sample CSI Data Processing
+import numpy as np
+from scipy import signal
+
+def process_csi(csi_data):
+    # Butterworth low-pass filter
+    b, a = signal.butter(4, 5, 'low', fs=100)
+    filtered = signal.filtfilt(b, a, csi_data)
+    
+    # Min-Max normalization
+    normalized = (filtered - np.min(filtered)) / (np.max(filtered) - np.min(filtered))
+    
+    return normalized
+
+# Load dataset
+csi_dataset = np.load('csi_data.npy')
+processed = np.apply_along_axis(process_csi, 1, csi_dataset)
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Results & Performance</h2>
+            
+            <div class="grid md:grid-cols-2 gap-10">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6 text-indigo-600">Model Accuracy Comparison</h3>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="h-64 flex items-end space-x-2">
+                            <!-- Baseline -->
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="bg-red-400 w-full rounded-t" style="height: 60%;"></div>
+                                <span class="mt-2 text-sm font-medium">Baseline CNN</span>
+                                <span class="text-xs text-gray-500">78.2%</span>
+                            </div>
+                            
+                            <!-- SCA Optimized -->
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="bg-indigo-400 w-full rounded-t" style="height: 85%;"></div>
+                                <span class="mt-2 text-sm font-medium">SCA-CNN</span>
+                                <span class="text-xs text-gray-500">85.7%</span>
+                            </div>
+                            
+                            <!-- GWO Optimized -->
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="bg-green-400 w-full rounded-t" style="height: 89%;"></div>
+                                <span class="mt-2 text-sm font-medium">GWO-LSTM</span>
+                                <span class="text-xs text-gray-500">89.3%</span>
+                            </div>
+                            
+                            <!-- HHO Optimized -->
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="bg-yellow-400 w-full rounded-t" style="height: 92%;"></div>
+                                <span class="mt-2 text-sm font-medium">HHO-Hybrid</span>
+                                <span class="text-xs text-gray-500">92.1%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="font-semibold mb-3">Confusion Matrix (HHO-Hybrid Model)</h4>
+                        <img src="https://www.researchgate.net/publication/344418992/figure/fig5/AS:939860235300864@1601021006395/Confusion-matrix-of-the-proposed-HAR-system.png" 
+                             alt="Confusion Matrix" class="rounded-lg w-full">
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6 text-indigo-600">Optimization Convergence</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <img src="https://www.researchgate.net/publication/334576405/figure/fig3/AS:783460538724352@1563992633295/Convergence-curves-of-different-algorithms.png" 
+                             alt="Optimization Convergence" class="rounded-lg w-full">
+                        <p class="text-sm text-gray-600 mt-2">Comparison of optimization algorithm convergence rates</p>
+                    </div>
+                    
+                    <div class="mt-8 bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="font-semibold mb-3">Key Findings</h4>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                            <li>HHO showed fastest convergence (200 iterations)</li>
+                            <li>SCA provided best balance between speed and accuracy</li>
+                            <li>Optimal architecture: 2 CNN + 1 LSTM layers</li>
+                            <li>Learning rate range: 0.001-0.005 performed best</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Our Team</h2>
+            
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Team Member 1 -->
+                <div class="bg-gray-50 p-6 rounded-xl text-center shadow-md hover:shadow-xl transition duration-300">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-indigo-100 flex items-center justify-center">
+                        <i class="fas fa-user text-indigo-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-1">Ahmed Mohamed</h3>
+                    <p class="text-indigo-600 mb-3">Data Preprocessing</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Member 2 -->
+                <div class="bg-gray-50 p-6 rounded-xl text-center shadow-md hover:shadow-xl transition duration-300">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-indigo-100 flex items-center justify-center">
+                        <i class="fas fa-user text-indigo-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-1">Fatima Zahra</h3>
+                    <p class="text-indigo-600 mb-3">Model Development</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Member 3 -->
+                <div class="bg-gray-50 p-6 rounded-xl text-center shadow-md hover:shadow-xl transition duration-300">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-indigo-100 flex items-center justify-center">
+                        <i class="fas fa-user text-indigo-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-1">Karim Aloui</h3>
+                    <p class="text-indigo-600 mb-3">Optimization</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Team Member 4 -->
+                <div class="bg-gray-50 p-6 rounded-xl text-center shadow-md hover:shadow-xl transition duration-300">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-indigo-100 flex items-center justify-center">
+                        <i class="fas fa-user text-indigo-600 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-1">Leila Ben Ali</h3>
+                    <p class="text-indigo-600 mb-3">UI Development</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-10">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2">CSI Activity Recognition</h3>
+                    <p class="text-indigo-200">Advanced Wireless Sensing with Deep Learning</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-indigo-200"><i class="fab fa-github text-xl"></i></a>
+                    <a href="#" class="hover:text-indigo-200"><i class="fab fa-youtube text-xl"></i></a>
+                    <a href="#" class="hover:text-indigo-200"><i class="fab fa-researchgate text-xl"></i></a>
+                </div>
+            </div>
+            
+            <div class="border-t border-indigo-400 mt-8 pt-8 text-center text-indigo-200">
+                <p>&copy; 2023 WiFi CSI HAR Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple tab functionality
+        const tabs = document.querySelectorAll('[id="implementation"] button');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('tab-active'));
+                tab.classList.add('tab-active');
+            });
+        });
+    </script>
+</body>
+</html>
